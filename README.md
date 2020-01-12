@@ -1,3 +1,5 @@
+# Run
+docker-compose up
 ## GET
 localhost:8080/books
 ## POST
