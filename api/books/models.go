@@ -1,7 +1,7 @@
 package books
 
 import (
-	"app/config"
+	"app/api/config"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -80,7 +80,6 @@ func UpdateBook(r *http.Request) (Book, error) {
 		return bk, errors.New("400. Bad Request. Fields can't be empty.")
 	}
 	json.Unmarshal(reqBody, &bk)
-	// insert values
 	_, err = config.DB.Exec("UPDATE books SET isbn = $1, title=$2, author=$3, price=$4 WHERE isbn=$1;", isbn, bk.Title, bk.Author, bk.Price)
 	if err != nil {
 		return bk, err

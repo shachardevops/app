@@ -3,6 +3,7 @@ package config
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -11,7 +12,11 @@ var DB *sql.DB
 
 func init() {
 	var err error
-	DB, err = sql.Open("postgres", "postgres://bond:password@postgres/bookstore?sslmode=disable")
+	pgUser := os.Getenv("POSTGRES_USER")
+	pgPass := os.Getenv("POSTGRES_PASSWORD")
+	pgDb := os.Getenv("POSTGRES_DB")
+	data := fmt.Sprintf("postgres://%v:%v@postgres/%v?sslmode=disable", pgUser, pgPass, pgDb)
+	DB, err = sql.Open("postgres", data)
 	if err != nil {
 		panic(err)
 	}

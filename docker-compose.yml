@@ -3,11 +3,24 @@ services:
   go_api:
     build:
       dockerfile: Dockerfile
-      context: ./
+      context: ./api
     ports:
       - "8080:8080"
     depends_on:
       - postgres
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+  consumer_app:
+    build:
+      dockerfile: Dockerfile
+      context: ./consumer_app
+    ports:
+      - "7070:7070"
+    depends_on:
+      - nsqd
+      - nsqlookupd
   nsqlookupd:
     image: nsqio/nsq
     command: /nsqlookupd
@@ -34,9 +47,9 @@ services:
     ports:
       - '3002:5432'
     environment:
-      POSTGRES_USER: 'bond'
-      POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'bookstore'
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
   pgadmin:
     image: thajeztah/pgadmin4
     volumes:

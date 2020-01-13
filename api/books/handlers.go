@@ -1,6 +1,7 @@
 package books
 
 import (
+	"app/api/config"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -8,32 +9,14 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/nsqio/go-nsq"
 )
 
-// func init() {
-// 	config := nsq.NewConfig()
-// 	producer, err := nsq.NewProducer("nsqd:4150", config)
-// 	if err != nil {
-// 		log.Panic(err)
-// 	}
-// 	err = producer.Publish("My_NSQ_Topic", []byte("sample NSQ message"))
-// 	if err != nil {
-// 		log.Panic(err)
-// 	}
-// 	producer.Stop()
-// }
 func producer(t string, m string) {
-	config := nsq.NewConfig()
-	producer, err := nsq.NewProducer("nsqd:4150", config)
+
+	err := config.Producer.Publish(t, []byte(m))
 	if err != nil {
 		log.Panic(err)
 	}
-	err = producer.Publish(t, []byte(m))
-	if err != nil {
-		log.Panic(err)
-	}
-	producer.Stop()
 }
 func Index(w http.ResponseWriter, r *http.Request) {
 	bks, err := AllBooks()
