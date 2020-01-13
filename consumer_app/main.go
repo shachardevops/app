@@ -18,6 +18,9 @@ func main() {
 }
 
 func receive(m, q <-chan string) {
+	/*
+		what do you think about this few lines of code?
+	*/
 	for {
 		select {
 		case v := <-m:
@@ -27,8 +30,7 @@ func receive(m, q <-chan string) {
 				fmt.Println("Quit from the channel:", i, ok)
 				return
 			}
-			fmt.Println("From comma ok", i)
-
+		default:
 		}
 	}
 }
